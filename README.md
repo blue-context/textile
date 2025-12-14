@@ -17,7 +17,13 @@ Textile wraps [LiteLLM](https://github.com/BerriAI/litellm) with a powerful tran
 ## Installation
 
 ```bash
-pip install textile
+pip install textile-llm
+```
+
+**Note**: The package is named `textile-llm` on PyPI, but you import it as `textile`:
+
+```python
+import textile  # Import name stays the same
 ```
 
 ## Quick Start
@@ -300,14 +306,22 @@ export OPENAI_API_KEY="sk-..."  # If using OpenAI embeddings
 ## Development
 
 ```bash
-# Install with dev dependencies
-pip install -e ".[dev]"
+# Clone the repository
+git clone https://github.com/blue-context/textile.git
+cd textile
+
+# Install with dev dependencies using uv
+uv sync --dev
 
 # Run tests
-pytest tests/ -v
+uv run pytest tests/ -v
 
 # Run with coverage
-pytest tests/ --cov=textile --cov-report=html
+uv run pytest tests/ --cov=textile --cov-report=html
+
+# Run linting
+uv run ruff check textile/ tests/
+uv run ruff format --check textile/ tests/
 ```
 
 ## Performance

@@ -2,11 +2,14 @@
 
 This document describes the process for releasing new versions of Textile to PyPI.
 
+**Note**: The package is published as `textile-llm` on PyPI (the name `textile` was already taken).
+
 ## Prerequisites
 
 1. **PyPI Trusted Publishing** must be configured:
    - Go to https://pypi.org/manage/account/publishing/
-   - Add a new publisher for `blue-context/textile`
+   - Add a new publisher for `blue-context/textile` (GitHub repo name)
+   - PyPI Project Name: `textile-llm` (PyPI package name)
    - Workflow name: `publish.yml`
    - Environment: leave blank or use `release`
 
@@ -65,12 +68,15 @@ Once the GitHub Release is published:
 ### 7. Verify Publication
 
 Check that the new version appears on PyPI:
-- https://pypi.org/project/textile/
+- https://pypi.org/project/textile-llm/
 
 Test installation:
 
 ```bash
-pip install textile==0.4.0
+pip install textile-llm==0.4.0
+
+# Verify import works (package name is textile-llm, import name is textile)
+python -c "import textile; print(textile.__version__)"
 ```
 
 ## Troubleshooting
@@ -81,7 +87,7 @@ If you see an error like "Trusted publishing exchange failure", you need to conf
 
 1. Go to https://pypi.org/manage/account/publishing/
 2. Add publisher with these settings:
-   - PyPI Project Name: `textile`
+   - PyPI Project Name: `textile-llm`
    - Owner: `blue-context`
    - Repository name: `textile`
    - Workflow name: `publish.yml`

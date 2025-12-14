@@ -6,7 +6,9 @@ from textile.core.metadata import DataclassMetadata, MessageMetadata
 
 
 class TestGlobalProperties:
-    @pytest.mark.parametrize("value,expected", [(0.5, 0.5), (0.0, 0.0), (1.0, 1.0), (1.5, 1.0), (2.0, 1.0)])
+    @pytest.mark.parametrize(
+        "value,expected", [(0.5, 0.5), (0.0, 0.0), (1.0, 1.0), (1.5, 1.0), (2.0, 1.0)]
+    )
     def test_prominence_clamped_to_one(self, value: float, expected: float) -> None:
         meta = MessageMetadata()
         meta.prominence = value

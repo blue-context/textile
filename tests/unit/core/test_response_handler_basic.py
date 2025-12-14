@@ -51,12 +51,12 @@ class TestTransformChunk:
 
     def test_stats_updated(self, handler: StreamingResponseHandler) -> None:
         handler.transform_chunk("test")
-        assert handler.get_stats()['chunks_processed'] == 1
+        assert handler.get_stats()["chunks_processed"] == 1
 
     def test_buffer_overflow_forces_flush(self) -> None:
         handler = StreamingResponseHandler([OnPattern("X", "Y")], max_buffer_size=50)
         handler.transform_chunk("A" * 60)
-        assert handler.get_stats()['chunks_processed'] == 1
+        assert handler.get_stats()["chunks_processed"] == 1
 
 
 class TestPatternApplication:

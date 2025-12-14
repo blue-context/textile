@@ -63,9 +63,7 @@ def count_tokens(
         )
     except Exception as e:
         # Prevents hard failures when model tokenizer unknown
-        logger.warning(
-            f"Token counting failed for model '{model}': {e}. Using fallback heuristic."
-        )
+        logger.warning(f"Token counting failed for model '{model}': {e}. Using fallback heuristic.")
         return _fallback_token_count(messages, text)
 
 

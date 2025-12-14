@@ -39,7 +39,9 @@ class TestSemanticDecayFilteringThresholds:
         similar_msg = create_message("user", "Similar", turn_index=5, embedding=query_embedding)
         similar_msg.metadata.prominence = 1.0
 
-        different_msg = create_message("user", "Different", turn_index=5, embedding=(-np.ones(384)).tolist())
+        different_msg = create_message(
+            "user", "Different", turn_index=5, embedding=(-np.ones(384)).tolist()
+        )
         different_msg.metadata.prominence = 1.0
 
         context = ContextWindow([similar_msg, different_msg], max_tokens=4096)

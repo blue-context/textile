@@ -26,9 +26,9 @@ class StreamingResponseHandler:
         self.buffer = ""
         self.buffer_threshold = self._calculate_buffer_threshold()
         self.stats = {
-            'chunks_processed': 0,
-            'patterns_applied': 0,
-            'errors': 0,
+            "chunks_processed": 0,
+            "patterns_applied": 0,
+            "errors": 0,
         }
 
     def _calculate_buffer_threshold(self) -> int:
@@ -49,7 +49,7 @@ class StreamingResponseHandler:
         if not chunk:
             return ""
 
-        self.stats['chunks_processed'] += 1
+        self.stats["chunks_processed"] += 1
         self.buffer += chunk
         safe_boundary = self._find_safe_boundary()
 
@@ -63,7 +63,7 @@ class StreamingResponseHandler:
             return self._apply_patterns(to_process)
         except Exception as e:
             logger.error(f"Error transforming chunk: {e}", exc_info=True)
-            self.stats['errors'] += 1
+            self.stats["errors"] += 1
             return to_process
 
     def _find_safe_boundary(self) -> int:
@@ -95,10 +95,10 @@ class StreamingResponseHandler:
             return boundary
 
         search_start = max(0, boundary - self.buffer_threshold)
-        search_region = self.buffer[search_start:boundary + self.buffer_threshold]
+        search_region = self.buffer[search_start : boundary + self.buffer_threshold]
 
         for i in range(len(search_region)):
-            if (match := pattern.match(search_region[i:])):
+            if match := pattern.match(search_region[i:]):
                 match_start_in_buffer = search_start + i
                 match_end_in_buffer = search_start + i + match.end()
 
@@ -119,8 +119,10 @@ class StreamingResponseHandler:
                 result = self._apply_single_pattern(result, pattern_handler)
             except Exception as e:
                 assert isinstance(pattern_handler.pattern, re.Pattern)
-                logger.error(f"Error applying pattern {pattern_handler.pattern.pattern}: {e}", exc_info=True)
-                self.stats['errors'] += 1
+                logger.error(
+                    f"Error applying pattern {pattern_handler.pattern.pattern}: {e}", exc_info=True
+                )
+                self.stats["errors"] += 1
 
         return result
 
@@ -137,11 +139,11 @@ class StreamingResponseHandler:
             try:
                 replacement = handler.get_replacement(match)
                 replacements_made += 1
-                self.stats['patterns_applied'] += 1
+                self.stats["patterns_applied"] += 1
                 return str(replacement)
             except Exception as e:
                 logger.error(f"Error in replacement function: {e}", exc_info=True)
-                self.stats['errors'] += 1
+                self.stats["errors"] += 1
                 return str(match.group(0))
 
         assert isinstance(handler.pattern, re.Pattern)
@@ -158,7 +160,7 @@ class StreamingResponseHandler:
             return transformed
         except Exception as e:
             logger.error(f"Error flushing buffer: {e}", exc_info=True)
-            self.stats['errors'] += 1
+            self.stats["errors"] += 1
             result = self.buffer
             self.buffer = ""
             return result

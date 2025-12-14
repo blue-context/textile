@@ -278,7 +278,9 @@ class SemanticDecayTransformer(ContextTransformer):
             recency_factor = 1.0 - turns_since_access / self.recency_threshold
             recency_boost = 1.0 + self.recency_multiplier * recency_factor
 
-        relevance = initial_prominence * type_modifier * combined_decay * salience_boost * recency_boost
+        relevance = (
+            initial_prominence * type_modifier * combined_decay * salience_boost * recency_boost
+        )
 
         decay_meta.last_access_turn = current_turn
 

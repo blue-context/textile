@@ -71,7 +71,8 @@ class DecayTransformer(ContextTransformer):
 
         # Keep non-system above threshold
         non_system_above_threshold = [
-            msg for msg in context.messages
+            msg
+            for msg in context.messages
             if msg.role != "system" and msg.metadata.prominence >= self.threshold
         ]
         messages_to_keep.update(msg.id for msg in non_system_above_threshold)
@@ -94,12 +95,13 @@ class DecayTransformer(ContextTransformer):
                 break
 
         # Ensure at least one non-system message (should already be satisfied)
-        if non_system_messages and not any(msg.id in messages_to_keep for msg in non_system_messages):
+        if non_system_messages and not any(
+            msg.id in messages_to_keep for msg in non_system_messages
+        ):
             best = max(non_system_messages, key=lambda m: m.metadata.prominence)
             messages_to_keep.add(best.id)
             logger.debug(
-                f"  No messages kept, keeping best: "
-                f"prominence={best.metadata.prominence:.3f}"
+                f"  No messages kept, keeping best: prominence={best.metadata.prominence:.3f}"
             )
 
         # Filter messages

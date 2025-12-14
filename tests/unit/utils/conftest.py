@@ -46,6 +46,7 @@ def sample_coroutine():
     Returns:
         Async function that returns a value
     """
+
     async def async_func(value: int) -> int:
         await asyncio.sleep(0.001)
         return value * 2
@@ -60,6 +61,7 @@ def failing_coroutine():
     Returns:
         Async function that raises ValueError
     """
+
     async def async_fail() -> None:
         await asyncio.sleep(0.001)
         raise ValueError("Test error")

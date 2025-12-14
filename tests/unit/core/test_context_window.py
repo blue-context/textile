@@ -37,7 +37,9 @@ class TestAddMessage:
         assert sample_context_window.messages[0] == msg
 
     @pytest.mark.parametrize("position", [0, 1, 2])
-    def test_add_at_various_positions(self, sample_context_window: ContextWindow, position: int) -> None:
+    def test_add_at_various_positions(
+        self, sample_context_window: ContextWindow, position: int
+    ) -> None:
         msg = Message(role="system", content="new")
         sample_context_window.add_message(msg, position=position)
         assert sample_context_window.messages[position] == msg
@@ -61,7 +63,9 @@ class TestGetMessage:
         assert sample_context_window.get_message_by_id("nonexistent") is None
 
     @pytest.mark.parametrize("role,expected_count", [("user", 1), ("assistant", 1), ("system", 0)])
-    def test_get_messages_by_role(self, sample_context_window: ContextWindow, role: str, expected_count: int) -> None:
+    def test_get_messages_by_role(
+        self, sample_context_window: ContextWindow, role: str, expected_count: int
+    ) -> None:
         messages = sample_context_window.get_messages_by_role(role)
         assert len(messages) == expected_count and all(msg.role == role for msg in messages)
 

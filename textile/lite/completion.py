@@ -32,13 +32,13 @@ def _build_trace(
 
 def _extract_chunk_content(chunk: Any) -> str | None:
     """Extract content from streaming chunk."""
-    if not hasattr(chunk, 'choices') or not chunk.choices:
+    if not hasattr(chunk, "choices") or not chunk.choices:
         return None
-    if not hasattr(chunk.choices[0], 'delta'):
+    if not hasattr(chunk.choices[0], "delta"):
         return None
     if not (delta := chunk.choices[0].delta):
         return None
-    return getattr(delta, 'content', None)
+    return getattr(delta, "content", None)
 
 
 def _create_flush_chunk(content: str) -> Any:
@@ -172,10 +172,7 @@ def _prepare_context(
     current_turn = len(message_objects) - 1
 
     state = TurnState(
-        user_message=messages[-1]["content"],
-        turn_index=current_turn,
-        tools=tools,
-        metadata={}
+        user_message=messages[-1]["content"], turn_index=current_turn, tools=tools, metadata={}
     )
 
     return context, state
@@ -188,7 +185,7 @@ def _apply_transformers(
 ) -> tuple[ContextWindow, TurnState]:
     """Apply transformers to context and state."""
     for transformer in transformers:
-        if hasattr(transformer, 'should_apply'):
+        if hasattr(transformer, "should_apply"):
             if not transformer.should_apply(context, state):
                 continue
         context, state = transformer.transform(context, state)
@@ -199,7 +196,7 @@ def _collect_response_patterns(transformers: list, state: TurnState) -> list:
     """Collect response patterns from transformers."""
     patterns = []
     for transformer in reversed(transformers):
-        if hasattr(transformer, 'on_response'):
+        if hasattr(transformer, "on_response"):
             if transformer_patterns := transformer.on_response(state):
                 patterns.extend(transformer_patterns)
     return patterns
@@ -232,11 +229,7 @@ def completion(
 
     if not transformers and not config.transformers:
         return litellm.completion(
-            model=model,
-            messages=messages,
-            tools=tools,
-            tool_choice=tool_choice,
-            **litellm_kwargs
+            model=model, messages=messages, tools=tools, tool_choice=tool_choice, **litellm_kwargs
         )
 
     context, state = _prepare_context(model, messages, litellm_kwargs, tools)
@@ -250,10 +243,10 @@ def completion(
         messages=context.render(),
         tools=state.tools,
         tool_choice=tool_choice,
-        **litellm_kwargs
+        **litellm_kwargs,
     )
 
-    is_streaming = litellm_kwargs.get('stream', False)
+    is_streaming = litellm_kwargs.get("stream", False)
     if patterns and is_streaming:
         response = _handle_streaming_response(response, patterns, is_async=False)
     elif patterns:
@@ -292,11 +285,7 @@ async def acompletion(
 
     if not transformers and not config.transformers:
         return await litellm.acompletion(
-            model=model,
-            messages=messages,
-            tools=tools,
-            tool_choice=tool_choice,
-            **litellm_kwargs
+            model=model, messages=messages, tools=tools, tool_choice=tool_choice, **litellm_kwargs
         )
 
     context, state = _prepare_context(model, messages, litellm_kwargs, tools)
@@ -310,10 +299,10 @@ async def acompletion(
         messages=context.render(),
         tools=state.tools,
         tool_choice=tool_choice,
-        **litellm_kwargs
+        **litellm_kwargs,
     )
 
-    is_streaming = litellm_kwargs.get('stream', False)
+    is_streaming = litellm_kwargs.get("stream", False)
     if patterns and is_streaming:
         response = _handle_streaming_response(response, patterns, is_async=True)
     elif patterns:

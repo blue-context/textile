@@ -28,12 +28,14 @@ class TransformationPipeline:
 
         if self.debug:
             self.trace = []
-            self.trace.append({
-                "step": "initial",
-                "transformer": None,
-                "messages_before": len(context.messages),
-                "messages": [{"role": m.role, "content": m.content} for m in context.messages],
-            })
+            self.trace.append(
+                {
+                    "step": "initial",
+                    "transformer": None,
+                    "messages_before": len(context.messages),
+                    "messages": [{"role": m.role, "content": m.content} for m in context.messages],
+                }
+            )
 
         for i, transformer in enumerate(self.transformers):
             if transformer.should_apply(context, current_state):
@@ -41,14 +43,18 @@ class TransformationPipeline:
                 context, current_state = transformer.transform(context, current_state)
 
                 if self.debug:
-                    self.trace.append({
-                        "step": i + 1,
-                        "transformer": transformer.__class__.__name__,
-                        "messages_before": messages_before,
-                        "messages_after": len(context.messages),
-                        "messages_removed": messages_before - len(context.messages),
-                        "messages": [{"role": m.role, "content": m.content} for m in context.messages],
-                    })
+                    self.trace.append(
+                        {
+                            "step": i + 1,
+                            "transformer": transformer.__class__.__name__,
+                            "messages_before": messages_before,
+                            "messages_after": len(context.messages),
+                            "messages_removed": messages_before - len(context.messages),
+                            "messages": [
+                                {"role": m.role, "content": m.content} for m in context.messages
+                            ],
+                        }
+                    )
 
         return context, current_state
 

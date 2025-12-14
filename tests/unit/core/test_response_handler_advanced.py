@@ -13,25 +13,27 @@ class TestErrorHandling:
         pattern = OnPattern("test", lambda m: (_ for _ in ()).throw(ValueError("error")))  # type: ignore[misc]
         handler = StreamingResponseHandler([pattern])
         handler.transform_chunk("test content")
-        assert "test" in handler.flush() and handler.get_stats()['errors'] > 0
+        assert "test" in handler.flush() and handler.get_stats()["errors"] > 0
 
     def test_flush_error_returns_buffer(self) -> None:
         def bad_replacement(_match: re.Match) -> str:
             raise RuntimeError("flush error")
+
         pattern = OnPattern("test", bad_replacement)
         handler = StreamingResponseHandler([pattern])
         handler.buffer = "test"
         result = handler.flush()
-        assert "test" in result and handler.get_stats()['errors'] > 0
+        assert "test" in result and handler.get_stats()["errors"] > 0
 
     def test_transform_chunk_exception(self) -> None:
         def crash_func(_match: re.Match) -> str:
             raise ValueError("transform crash")
+
         pattern = OnPattern("X", crash_func)
         handler = StreamingResponseHandler([pattern])
         handler.transform_chunk("XXX buffering text")
         handler.flush()
-        assert handler.get_stats()['errors'] > 0
+        assert handler.get_stats()["errors"] > 0
 
 
 class TestBoundaryLogic:
@@ -63,11 +65,14 @@ class TestBoundaryLogic:
         boundary = handler._find_safe_boundary()
         assert boundary >= 0
 
-    @pytest.mark.parametrize("boundary,expected_ge", [
-        (0, 0),
-        (-5, 0),
-        (1000, 1000),
-    ])
+    @pytest.mark.parametrize(
+        "boundary,expected_ge",
+        [
+            (0, 0),
+            (-5, 0),
+            (1000, 1000),
+        ],
+    )
     def test_adjust_boundary_edge_cases(self, boundary: int, expected_ge: int) -> None:
         pattern = OnPattern("test", "x")
         handler = StreamingResponseHandler([pattern])
@@ -86,10 +91,11 @@ class TestApplyPatternsEdgeCases:
     def test_pattern_error_logged_continues(self) -> None:
         def error_func(_match: re.Match) -> str:
             raise RuntimeError("pattern error")
+
         patterns = [OnPattern("A", error_func), OnPattern("B", "2")]
         handler = StreamingResponseHandler(patterns)
         handler._apply_patterns("A and B")
-        assert handler.get_stats()['errors'] > 0
+        assert handler.get_stats()["errors"] > 0
 
     def test_partial_match_at_boundary(self) -> None:
         pattern = OnPattern(re.compile(r"<TAG>"), "REPLACED")

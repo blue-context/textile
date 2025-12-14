@@ -32,9 +32,15 @@ class TestDecayTransformer:
         with pytest.raises(ValueError, match="min_recent_messages must be >= 1"):
             DecayTransformer(min_recent_messages=-1)
 
-    @pytest.mark.parametrize("half_life,msg_turn,state_turn,expected", [
-        (5, 10, 10, 1.0), (5, 5, 10, 0.5), (5, 0, 10, 0.25), (10, 5, 15, 0.5),
-    ])
+    @pytest.mark.parametrize(
+        "half_life,msg_turn,state_turn,expected",
+        [
+            (5, 10, 10, 1.0),
+            (5, 5, 10, 0.5),
+            (5, 0, 10, 0.25),
+            (10, 5, 15, 0.5),
+        ],
+    )
     def test_applies_exponential_decay(self, half_life, msg_turn, state_turn, expected):
         """Test that prominence decays exponentially based on age."""
         msg = Message(role="user", content="Test")
@@ -138,5 +144,8 @@ class TestDecayTransformer:
         transformer = DecayTransformer()
         single = ContextWindow([Message(role="user", content="One")], max_tokens=4096)
         assert not transformer.should_apply(single, sample_state)
-        multiple = ContextWindow([Message(role="user", content="One"), Message(role="user", content="Two")], max_tokens=4096)
+        multiple = ContextWindow(
+            [Message(role="user", content="One"), Message(role="user", content="Two")],
+            max_tokens=4096,
+        )
         assert transformer.should_apply(multiple, sample_state)

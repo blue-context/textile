@@ -10,12 +10,15 @@ from textile.lite.completion import (
 )
 
 
-@pytest.mark.parametrize("has_choices,has_delta,has_content,expected", [
-    (False, False, False, None),
-    (True, False, False, None),
-    (True, True, False, None),
-    (True, True, True, "content"),
-])
+@pytest.mark.parametrize(
+    "has_choices,has_delta,has_content,expected",
+    [
+        (False, False, False, None),
+        (True, False, False, None),
+        (True, True, False, None),
+        (True, True, True, "content"),
+    ],
+)
 def test_extract_chunk_content(has_choices, has_delta, has_content, expected):
     """Extract content from streaming chunks."""
     if not has_choices:

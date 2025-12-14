@@ -4,7 +4,7 @@ import asyncio
 from collections.abc import Coroutine
 from typing import TypeVar
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 def run_sync(coro: Coroutine[None, None, T]) -> T:

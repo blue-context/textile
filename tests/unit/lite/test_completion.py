@@ -23,8 +23,13 @@ def test_completion_with_transformers(sample_messages, mock_completion_response,
         with patch("textile.lite.completion.get_config") as mock_config:
             mock_config.return_value.transformers = None
             with patch("litellm.get_max_tokens", return_value=4096):
-                mock_transformer.transform.return_value = (Mock(render=Mock(return_value=sample_messages)), Mock(tools=None))
-                result = completion(model="gpt-4", messages=sample_messages, transformers=[mock_transformer])
+                mock_transformer.transform.return_value = (
+                    Mock(render=Mock(return_value=sample_messages)),
+                    Mock(tools=None),
+                )
+                result = completion(
+                    model="gpt-4", messages=sample_messages, transformers=[mock_transformer]
+                )
                 assert result is not None
                 mock_transformer.transform.assert_called_once()
 
@@ -58,13 +63,22 @@ def test_completion_debug_trace(sample_messages, mock_completion_response, mock_
         with patch("textile.lite.completion.get_config") as mock_config:
             mock_config.return_value.transformers = None
             with patch("litellm.get_max_tokens", return_value=4096):
-                mock_transformer.transform.return_value = (Mock(render=Mock(return_value=sample_messages), messages=[], max_tokens=4096), Mock(tools=None, user_message="test", metadata={}))
-                result = completion(model="gpt-4", messages=sample_messages, transformers=[mock_transformer], debug=True)
+                mock_transformer.transform.return_value = (
+                    Mock(render=Mock(return_value=sample_messages), messages=[], max_tokens=4096),
+                    Mock(tools=None, user_message="test", metadata={}),
+                )
+                result = completion(
+                    model="gpt-4",
+                    messages=sample_messages,
+                    transformers=[mock_transformer],
+                    debug=True,
+                )
                 assert hasattr(result, "_textile_trace")
 
 
 def test_completion_passthrough_streaming(sample_messages):
     """Streaming works when no patterns."""
+
     def mock_stream():
         yield Mock()
 

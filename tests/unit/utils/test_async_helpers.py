@@ -14,9 +14,7 @@ class TestRunSync:
         result = run_sync(sample_coroutine(5))
         assert result == 10
 
-    @pytest.mark.parametrize("value,expected", [
-        (1, 2), (10, 20), (100, 200), (0, 0)
-    ])
+    @pytest.mark.parametrize("value,expected", [(1, 2), (10, 20), (100, 200), (0, 0)])
     def test_returns_coroutine_result(self, sample_coroutine, value, expected):
         result = run_sync(sample_coroutine(value))
         assert result == expected
@@ -44,6 +42,7 @@ class TestRunSync:
 
     def test_handles_immediate_return_coroutine(self):
         """Test coroutine that returns immediately without await."""
+
         async def immediate():
             return 42
 
@@ -52,6 +51,7 @@ class TestRunSync:
 
     def test_handles_nested_awaits(self):
         """Test coroutine with nested async calls."""
+
         async def inner():
             await asyncio.sleep(0.001)
             return "inner"
@@ -65,6 +65,7 @@ class TestRunSync:
 
     def test_preserves_coroutine_return_type(self):
         """Verify return type is preserved."""
+
         async def return_dict():
             return {"key": "value"}
 
@@ -72,9 +73,7 @@ class TestRunSync:
         assert isinstance(result, dict)
         assert result == {"key": "value"}
 
-    @pytest.mark.parametrize("return_value", [
-        42, "string", [1, 2, 3], {"a": 1}, None, True
-    ])
+    @pytest.mark.parametrize("return_value", [42, "string", [1, 2, 3], {"a": 1}, None, True])
     def test_handles_various_return_types(self, return_value):
         async def return_value_coro():
             return return_value
@@ -84,6 +83,7 @@ class TestRunSync:
 
     def test_cleanup_after_exception(self):
         """Verify proper cleanup even when coroutine raises."""
+
         async def cleanup_test():
             try:
                 raise ValueError("cleanup test")

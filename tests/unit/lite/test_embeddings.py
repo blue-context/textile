@@ -23,9 +23,7 @@ def test_embedding_with_storage_configured(mock_embedding_response, mock_sync_st
             mock_config.return_value._store = mock_sync_store
             with patch("textile.lite.embeddings.run_sync") as mock_run_sync:
                 result = embedding(
-                    model="text-embedding-3-small",
-                    input="test",
-                    store_in_conversation="conv_123"
+                    model="text-embedding-3-small", input="test", store_in_conversation="conv_123"
                 )
                 assert result == mock_embedding_response
                 mock_run_sync.assert_called_once()
@@ -39,9 +37,7 @@ def test_embedding_storage_failure_handling(mock_embedding_response, mock_sync_s
             mock_config.return_value._store = mock_sync_store
             with patch("textile.lite.embeddings.run_sync", side_effect=Exception("Storage error")):
                 result = embedding(
-                    model="text-embedding-3-small",
-                    input="test",
-                    store_in_conversation="conv_123"
+                    model="text-embedding-3-small", input="test", store_in_conversation="conv_123"
                 )
                 assert result == mock_embedding_response
 
@@ -53,17 +49,18 @@ def test_embedding_storage_not_configured():
             mock_config.return_value._store = None
             with pytest.raises(RuntimeError, match="Sync store not configured"):
                 embedding(
-                    model="text-embedding-3-small",
-                    input="test",
-                    store_in_conversation="conv_123"
+                    model="text-embedding-3-small", input="test", store_in_conversation="conv_123"
                 )
 
 
-@pytest.mark.parametrize("dimensions,encoding_format", [
-    (None, None),
-    (1536, "float"),
-    (512, "base64"),
-])
+@pytest.mark.parametrize(
+    "dimensions,encoding_format",
+    [
+        (None, None),
+        (1536, "float"),
+        (512, "base64"),
+    ],
+)
 def test_embedding_with_litellm_kwargs(mock_embedding_response, dimensions, encoding_format):
     """Pass additional kwargs to litellm."""
     kwargs = {}

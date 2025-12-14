@@ -22,25 +22,23 @@ def mock_litellm_streaming():
     """Mock LiteLLM streaming chunks."""
     chunks = [
         SimpleNamespace(
-            choices=[SimpleNamespace(
-                delta=SimpleNamespace(content="Hello "),
-                index=0,
-                finish_reason=None
-            )]
+            choices=[
+                SimpleNamespace(
+                    delta=SimpleNamespace(content="Hello "), index=0, finish_reason=None
+                )
+            ]
         ),
         SimpleNamespace(
-            choices=[SimpleNamespace(
-                delta=SimpleNamespace(content="world!"),
-                index=0,
-                finish_reason=None
-            )]
+            choices=[
+                SimpleNamespace(
+                    delta=SimpleNamespace(content="world!"), index=0, finish_reason=None
+                )
+            ]
         ),
         SimpleNamespace(
-            choices=[SimpleNamespace(
-                delta=SimpleNamespace(content=None),
-                index=0,
-                finish_reason="stop"
-            )]
+            choices=[
+                SimpleNamespace(delta=SimpleNamespace(content=None), index=0, finish_reason="stop")
+            ]
         ),
     ]
     return iter(chunks)
@@ -49,32 +47,34 @@ def mock_litellm_streaming():
 @pytest.fixture
 def mock_async_litellm_streaming():
     """Mock async LiteLLM streaming."""
+
     async def async_gen():
         chunks = [
             SimpleNamespace(
-                choices=[SimpleNamespace(
-                    delta=SimpleNamespace(content="Async "),
-                    index=0,
-                    finish_reason=None
-                )]
+                choices=[
+                    SimpleNamespace(
+                        delta=SimpleNamespace(content="Async "), index=0, finish_reason=None
+                    )
+                ]
             ),
             SimpleNamespace(
-                choices=[SimpleNamespace(
-                    delta=SimpleNamespace(content="response!"),
-                    index=0,
-                    finish_reason=None
-                )]
+                choices=[
+                    SimpleNamespace(
+                        delta=SimpleNamespace(content="response!"), index=0, finish_reason=None
+                    )
+                ]
             ),
             SimpleNamespace(
-                choices=[SimpleNamespace(
-                    delta=SimpleNamespace(content=None),
-                    index=0,
-                    finish_reason="stop"
-                )]
+                choices=[
+                    SimpleNamespace(
+                        delta=SimpleNamespace(content=None), index=0, finish_reason="stop"
+                    )
+                ]
             ),
         ]
         for chunk in chunks:
             yield chunk
+
     return async_gen()
 
 
@@ -98,7 +98,7 @@ def tool_catalog():
             "function": {
                 "name": f"tool_{i}",
                 "description": f"Tool for {'weather' if i < 5 else 'database' if i < 10 else 'file'} operations",
-            }
+            },
         }
         for i in range(20)
     ]

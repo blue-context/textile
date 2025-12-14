@@ -35,7 +35,9 @@ def test_count_tokens_with_custom_tokenizer(sample_messages):
     """Use custom tokenizer if provided."""
     custom_tokenizer = object()
     with patch("textile.lite.tokens.litellm_token_counter", return_value=30):
-        result = count_tokens(model="gpt-4", messages=sample_messages, custom_tokenizer=custom_tokenizer)
+        result = count_tokens(
+            model="gpt-4", messages=sample_messages, custom_tokenizer=custom_tokenizer
+        )
         assert result == 30
 
 

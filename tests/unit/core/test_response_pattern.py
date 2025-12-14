@@ -24,7 +24,10 @@ class TestPatternCreation:
 
     @pytest.mark.parametrize("max_replacements", [0, 1, 5, 10])
     def test_max_replacements_set(self, max_replacements: int) -> None:
-        assert OnPattern("test", "replaced", max_replacements=max_replacements).max_replacements == max_replacements
+        assert (
+            OnPattern("test", "replaced", max_replacements=max_replacements).max_replacements
+            == max_replacements
+        )
 
     @pytest.mark.parametrize("invalid_pattern", [123, None, [], {}])
     def test_invalid_pattern_type_raises_error(self, invalid_pattern: object) -> None:
@@ -65,7 +68,9 @@ class TestCallableReplacement:
 
 
 class TestPatternWarnings:
-    def test_compiled_pattern_with_ignore_case_warns(self, caplog: pytest.LogCaptureFixture) -> None:
+    def test_compiled_pattern_with_ignore_case_warns(
+        self, caplog: pytest.LogCaptureFixture
+    ) -> None:
         OnPattern(re.compile("test"), "replaced", ignore_case=True)
         assert "ignore_case=True but pattern already compiled" in caplog.text
 

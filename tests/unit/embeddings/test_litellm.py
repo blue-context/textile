@@ -1,6 +1,5 @@
 """Tests for LiteLLM embedding implementation."""
 
-
 import numpy as np
 import pytest
 
@@ -19,11 +18,14 @@ class TestLiteLLMEmbedding:
         model = Embedding(model="text-embedding-3-small")
         assert model.dimension == len(sample_embedding_vector)
 
-    @pytest.mark.parametrize("model_name", [
-        "text-embedding-3-small",
-        "text-embedding-3-large",
-        "text-embedding-ada-002",
-    ])
+    @pytest.mark.parametrize(
+        "model_name",
+        [
+            "text-embedding-3-small",
+            "text-embedding-3-large",
+            "text-embedding-ada-002",
+        ],
+    )
     def test_model_name_stored(self, mock_litellm, model_name):
         model = Embedding(model=model_name, dimensions=1536)
         assert model.model == model_name
@@ -52,11 +54,13 @@ class TestLiteLLMEmbedding:
     def test_litellm_kwargs_passed_through(self, monkeypatch, mock_embedding_response):
         """Verify extra kwargs are passed to litellm.embedding."""
         call_kwargs = {}
+
         def capture_kwargs(model, input, **kwargs):
             call_kwargs.update(kwargs)
             return mock_embedding_response([0.1] * 1536)
 
         import litellm
+
         monkeypatch.setattr(litellm, "embedding", capture_kwargs)
         model = Embedding(dimensions=1536, timeout=30, max_retries=3)
         model.encode("test")
@@ -66,8 +70,11 @@ class TestLiteLLMEmbedding:
         def mock_embedding_512(model, input, **kwargs):
             class MockResponse:
                 data = [{"embedding": [0.1] * 512}]
+
             return MockResponse()
+
         import litellm
+
         monkeypatch.setattr(litellm, "embedding", mock_embedding_512)
         model = Embedding(dimensions=512)
         assert model.dimension == 512 and len(model.encode("test")) == 512
@@ -78,15 +85,19 @@ class TestLiteLLMEmbedding:
 
     def test_encode_batch_preserves_order(self, monkeypatch, mock_embedding_response):
         """Verify batch encoding preserves input order."""
+
         def ordered_embedding(model, input, **kwargs):
             if isinstance(input, list):
                 embeddings = [[i / 10.0] * 1536 for i in range(len(input))]
+
                 class Response:
                     data = [{"embedding": emb} for emb in embeddings]
+
                 return Response()
             return mock_embedding_response([0.1] * 1536)
 
         import litellm
+
         monkeypatch.setattr(litellm, "embedding", ordered_embedding)
         model = Embedding(dimensions=1536)
         result = model.encode_batch(["a", "b", "c"])

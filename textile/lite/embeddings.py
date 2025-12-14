@@ -45,13 +45,15 @@ def _store_embedding_event_sync(
 ) -> None:
     """Store embedding event synchronously."""
     try:
-        run_sync(store.store_embedding_event(
-            conversation_id=conversation_id,
-            model=model,
-            input_texts=input_texts,
-            embeddings=embeddings,
-            metadata=metadata,
-        ))
+        run_sync(
+            store.store_embedding_event(
+                conversation_id=conversation_id,
+                model=model,
+                input_texts=input_texts,
+                embeddings=embeddings,
+                metadata=metadata,
+            )
+        )
     except Exception:
         # Storage is non-critical - embedding succeeds even if storage fails.
         pass
@@ -106,6 +108,7 @@ def _execute_embedding(
                 "  textile.configure(storage=InMemoryStore())"
             )
     if is_async:
+
         async def _async_embed_and_store():
             resp = await response_coro
             input_texts, embeddings = _extract_embedding_data(resp, input)
@@ -124,12 +127,12 @@ def _execute_embedding(
                 pass
 
             return resp
+
         return _async_embed_and_store()
     input_texts, embeddings = _extract_embedding_data(response, input)
     metadata = _build_metadata(response, len(embeddings[0]) if embeddings else 0)
     _store_embedding_event_sync(
-        store, store_in_conversation, model,
-        input_texts, embeddings, metadata
+        store, store_in_conversation, model, input_texts, embeddings, metadata
     )
     return response
 
@@ -162,10 +165,7 @@ def embedding(
         ...     store_in_conversation="conv_123"
         ... )
     """
-    return _execute_embedding(
-        model, input, store_in_conversation,
-        is_async=False, **litellm_kwargs
-    )
+    return _execute_embedding(model, input, store_in_conversation, is_async=False, **litellm_kwargs)
 
 
 async def aembedding(
@@ -193,6 +193,5 @@ async def aembedding(
         ...     )
     """
     return await _execute_embedding(
-        model, input, store_in_conversation,
-        is_async=True, **litellm_kwargs
+        model, input, store_in_conversation, is_async=True, **litellm_kwargs
     )

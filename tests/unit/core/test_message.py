@@ -86,11 +86,14 @@ class TestMessageMetadataProperties:
         msg.turn_index = 3
         assert msg.metadata.turn_index == 3
 
-    @pytest.mark.parametrize("embedding", [
-        [0.1, 0.2, 0.3],
-        [1.0] * 1536,
-        None,
-    ])
+    @pytest.mark.parametrize(
+        "embedding",
+        [
+            [0.1, 0.2, 0.3],
+            [1.0] * 1536,
+            None,
+        ],
+    )
     def test_embedding_property_roundtrip(self, embedding: list[float] | None) -> None:
         msg = Message(role="user", content="test")
         msg.embedding = embedding

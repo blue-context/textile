@@ -35,9 +35,7 @@ class SemanticToolSelectionTransformer(ContextTransformer):
             raise ValueError(f"max_tools must be positive, got {max_tools}")
 
         if not 0.0 <= similarity_threshold <= 1.0:
-            raise ValueError(
-                f"similarity_threshold must be in [0, 1], got {similarity_threshold}"
-            )
+            raise ValueError(f"similarity_threshold must be in [0, 1], got {similarity_threshold}")
 
         self.max_tools = max_tools
         self.threshold = similarity_threshold
@@ -106,10 +104,14 @@ class SemanticToolSelectionTransformer(ContextTransformer):
 
         if context.messages:
             selected_tool_names = [
-                t.get("function", {}).get("name", "") for t in selected_tools if t.get("type") == "function"
+                t.get("function", {}).get("name", "")
+                for t in selected_tools
+                if t.get("type") == "function"
             ]
             context.messages[0].metadata._set_raw("selected_tools", selected_tool_names)
-            context.messages[0].metadata._set_raw("tools_filtered", len(tools) - len(selected_tools))
+            context.messages[0].metadata._set_raw(
+                "tools_filtered", len(tools) - len(selected_tools)
+            )
 
         new_state = replace(state, tools=selected_tools)
         return context, new_state

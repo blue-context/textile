@@ -14,7 +14,7 @@ def create_message(role: str, content: str, turn_index: int = 0, embedding=None)
     msg.turn_index = turn_index
     if embedding is not None:
         # Convert numpy array to list for storage (like what would happen in practice)
-        if hasattr(embedding, 'tolist'):
+        if hasattr(embedding, "tolist"):
             msg.embedding = embedding.tolist()
         else:
             msg.embedding = embedding

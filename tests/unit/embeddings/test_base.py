@@ -36,9 +36,7 @@ class TestEmbeddingModel:
         assert result.shape == (dim,)
         assert result.dtype == np.float32
 
-    @pytest.mark.parametrize("batch_size,dim", [
-        (1, 128), (3, 256), (10, 512)
-    ])
+    @pytest.mark.parametrize("batch_size,dim", [(1, 128), (3, 256), (10, 512)])
     def test_encode_batch_returns_correct_shape(self, batch_size, dim):
         model = ConcreteEmbedding(dim=dim)
         texts = ["test"] * batch_size

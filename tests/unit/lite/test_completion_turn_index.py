@@ -46,7 +46,9 @@ def test_decay_transformer_filters_old_messages(mock_completion_response):
         completion(
             model="gpt-3.5-turbo",
             messages=messages,
-            transformers=[DecayTransformer(half_life_turns=2, threshold=0.2, min_recent_messages=4)],
+            transformers=[
+                DecayTransformer(half_life_turns=2, threshold=0.2, min_recent_messages=4)
+            ],
         )
     message_contents = [msg["content"] for msg in captured_llm_messages]
     assert len(captured_llm_messages) < len(messages)
@@ -78,7 +80,9 @@ def test_decay_filters_context_shift_conversation(mock_completion_response):
         completion(
             model="gpt-3.5-turbo",
             messages=messages,
-            transformers=[DecayTransformer(half_life_turns=2, threshold=0.2, min_recent_messages=5)],
+            transformers=[
+                DecayTransformer(half_life_turns=2, threshold=0.2, min_recent_messages=5)
+            ],
         )
     message_contents = [msg["content"] for msg in captured_llm_messages]
     content_text = " ".join(message_contents)
@@ -91,7 +95,9 @@ def test_completion_without_transformers_no_regression(mock_completion_response)
     """Verify completion without transformers still works (no turn indices needed)."""
     messages = [{"role": "user", "content": "Simple question"}]
 
-    with patch("textile.lite.completion.litellm.completion", return_value=mock_completion_response) as mock_llm:
+    with patch(
+        "textile.lite.completion.litellm.completion", return_value=mock_completion_response
+    ) as mock_llm:
         result = completion(model="gpt-3.5-turbo", messages=messages)
 
     assert mock_llm.called

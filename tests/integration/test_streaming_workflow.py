@@ -14,11 +14,7 @@ def test_streaming_completion_basic(conversation_messages, mock_litellm_streamin
         with patch("textile.lite.completion.get_config") as mock_config:
             mock_config.return_value.transformers = None
 
-            response = completion(
-                model="gpt-4",
-                messages=conversation_messages,
-                stream=True
-            )
+            response = completion(model="gpt-4", messages=conversation_messages, stream=True)
 
             chunks = list(response)
             assert len(chunks) > 0
@@ -30,12 +26,11 @@ def test_streaming_with_transformer(conversation_messages, mock_litellm_streamin
         with patch("textile.lite.completion.get_config") as mock_config:
             mock_config.return_value.transformers = None
             with patch("litellm.get_max_tokens", return_value=4096):
-
                 response = completion(
                     model="gpt-4",
                     messages=conversation_messages,
                     transformers=[DecayTransformer()],
-                    stream=True
+                    stream=True,
                 )
 
                 chunks = list(response)
@@ -48,19 +43,18 @@ def test_streaming_collects_chunks(conversation_messages, mock_litellm_streaming
         with patch("textile.lite.completion.get_config") as mock_config:
             mock_config.return_value.transformers = None
             with patch("litellm.get_max_tokens", return_value=4096):
-
                 response = completion(
                     model="gpt-4",
                     messages=conversation_messages,
                     transformers=[DecayTransformer()],
-                    stream=True
+                    stream=True,
                 )
 
                 collected = []
                 for chunk in response:
-                    if hasattr(chunk, 'choices') and chunk.choices:
-                        if hasattr(chunk.choices[0], 'delta'):
-                            content = getattr(chunk.choices[0].delta, 'content', None)
+                    if hasattr(chunk, "choices") and chunk.choices:
+                        if hasattr(chunk.choices[0], "delta"):
+                            content = getattr(chunk.choices[0].delta, "content", None)
                             if content:
                                 collected.append(content)
 
@@ -75,12 +69,11 @@ async def test_async_streaming_workflow(conversation_messages, mock_async_litell
         with patch("textile.lite.completion.get_config") as mock_config:
             mock_config.return_value.transformers = None
             with patch("litellm.get_max_tokens", return_value=4096):
-
                 response = await acompletion(
                     model="gpt-4",
                     messages=conversation_messages,
                     transformers=[DecayTransformer()],
-                    stream=True
+                    stream=True,
                 )
 
                 chunks = []

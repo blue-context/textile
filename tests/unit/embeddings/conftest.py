@@ -10,6 +10,7 @@ def mock_embedding_response():
     Returns:
         Mock object simulating litellm.embedding() response
     """
+
     class MockData:
         def __init__(self, embedding):
             self.data = [{"embedding": embedding}]
@@ -54,6 +55,7 @@ def mock_litellm(monkeypatch, sample_embedding_vector):
     Returns:
         Mock function that returns sample embedding data
     """
+
     def mock_embedding(model: str, input: str | list[str], **kwargs):
         class MockResponse:
             def __init__(self, embeddings):
@@ -64,5 +66,6 @@ def mock_litellm(monkeypatch, sample_embedding_vector):
         return MockResponse([sample_embedding_vector])
 
     import litellm
+
     monkeypatch.setattr(litellm, "embedding", mock_embedding)
     return mock_embedding

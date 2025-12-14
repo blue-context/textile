@@ -13,10 +13,16 @@ from textile.transformers.semantic_prune import SemanticPruningTransformer
 class TestSemanticPruningTransformer:
     """Tests for semantic pruning transformer."""
 
-    @pytest.mark.parametrize("threshold,valid", [
-        (0.0, True), (0.5, True), (1.0, True),
-        (-0.1, False), (1.1, False),
-    ])
+    @pytest.mark.parametrize(
+        "threshold,valid",
+        [
+            (0.0, True),
+            (0.5, True),
+            (1.0, True),
+            (-0.1, False),
+            (1.1, False),
+        ],
+    )
     def test_init_validates_threshold(self, threshold, valid):
         if valid:
             transformer = SemanticPruningTransformer(similarity_threshold=threshold)

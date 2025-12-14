@@ -1,4 +1,5 @@
 """Integration tests for multi-transformer pipelines."""
+
 from unittest.mock import Mock, patch
 
 from textile import completion
@@ -13,11 +14,14 @@ def test_pipeline_with_multiple_transformers(conversation_messages, mock_litellm
             with patch("litellm.get_max_tokens", return_value=4096):
                 transformers = [
                     DecayTransformer(half_life_turns=3, threshold=0.2),
-                    DecayTransformer(half_life_turns=5, threshold=0.1)]
+                    DecayTransformer(half_life_turns=5, threshold=0.1),
+                ]
                 response = completion(
-                    model="gpt-4", messages=conversation_messages, transformers=transformers)
+                    model="gpt-4", messages=conversation_messages, transformers=transformers
+                )
                 assert response is not None
                 mock_llm.assert_called_once()
+
 
 def test_pipeline_sequential_application(conversation_messages, mock_litellm_response):
     """Test transformers apply sequentially with state threading."""
@@ -40,11 +44,14 @@ def test_pipeline_sequential_application(conversation_messages, mock_litellm_res
             mock_config.return_value.transformers = None
             with patch("litellm.get_max_tokens", return_value=4096):
                 response = completion(
-                    model="gpt-4", messages=conversation_messages,
-                    transformers=[mock_transformer_1, mock_transformer_2])
+                    model="gpt-4",
+                    messages=conversation_messages,
+                    transformers=[mock_transformer_1, mock_transformer_2],
+                )
                 assert response is not None
                 mock_transformer_1.transform.assert_called_once()
                 mock_transformer_2.transform.assert_called_once()
+
 
 def test_pipeline_conditional_application(conversation_messages, mock_litellm_response):
     """Test transformers respect should_apply conditions."""
@@ -56,10 +63,11 @@ def test_pipeline_conditional_application(conversation_messages, mock_litellm_re
             mock_config.return_value.transformers = None
             with patch("litellm.get_max_tokens", return_value=4096):
                 response = completion(
-                    model="gpt-4", messages=conversation_messages,
-                    transformers=[mock_transformer])
+                    model="gpt-4", messages=conversation_messages, transformers=[mock_transformer]
+                )
                 assert response is not None
                 mock_transformer.transform.assert_not_called()
+
 
 def test_pipeline_with_config_transformers(conversation_messages, mock_litellm_response):
     """Test global transformers from config."""

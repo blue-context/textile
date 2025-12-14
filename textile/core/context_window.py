@@ -51,9 +51,7 @@ class ContextWindow:
         return [msg.to_dict() for msg in self.messages]
 
     def total_tokens(
-        self,
-        model: str = "gpt-3.5-turbo",
-        custom_tokenizer: Any | None = None
+        self, model: str = "gpt-3.5-turbo", custom_tokenizer: Any | None = None
     ) -> int:
         """Count tokens using model-specific tokenizer."""
         from textile.lite.tokens import count_tokens

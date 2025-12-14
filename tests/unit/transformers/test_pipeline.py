@@ -1,6 +1,5 @@
 """Tests for TransformationPipeline."""
 
-
 from textile.core.message import Message
 from textile.core.turn_state import TurnState
 from textile.transformers.base import ContextTransformer

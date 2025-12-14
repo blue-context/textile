@@ -17,20 +17,26 @@ class TestCosineSimilarity:
         a, b = orthogonal_vectors
         assert cosine_similarity(a, b) == pytest.approx(0.0)
 
-    @pytest.mark.parametrize("vec", [
-        np.array([1.0, 0.0, 0.0], dtype=np.float32),
-        np.array([0.0, 1.0, 0.0], dtype=np.float32),
-        np.array([0.5, 0.5, 0.5], dtype=np.float32),
-    ])
+    @pytest.mark.parametrize(
+        "vec",
+        [
+            np.array([1.0, 0.0, 0.0], dtype=np.float32),
+            np.array([0.0, 1.0, 0.0], dtype=np.float32),
+            np.array([0.5, 0.5, 0.5], dtype=np.float32),
+        ],
+    )
     def test_vector_with_itself_returns_one(self, vec):
         assert cosine_similarity(vec, vec) == pytest.approx(1.0)
 
-    @pytest.mark.parametrize("a,b,expected", [
-        ([1.0, 0.0], [1.0, 0.0], 1.0),
-        ([1.0, 0.0], [0.0, 1.0], 0.0),
-        ([1.0, 1.0], [1.0, 1.0], 1.0),
-        ([1.0, 1.0], [-1.0, -1.0], 0.0),  # Clipped to 0
-    ])
+    @pytest.mark.parametrize(
+        "a,b,expected",
+        [
+            ([1.0, 0.0], [1.0, 0.0], 1.0),
+            ([1.0, 0.0], [0.0, 1.0], 0.0),
+            ([1.0, 1.0], [1.0, 1.0], 1.0),
+            ([1.0, 1.0], [-1.0, -1.0], 0.0),  # Clipped to 0
+        ],
+    )
     def test_known_similarities(self, a, b, expected):
         result = cosine_similarity(a, b)
         assert result == pytest.approx(expected, abs=1e-6)
@@ -54,22 +60,28 @@ class TestCosineSimilarity:
         result = cosine_similarity(a, b)
         assert result == pytest.approx(1.0)
 
-    @pytest.mark.parametrize("a_shape,b_shape", [
-        ([1, 2], [1, 2, 3]),
-        ([1], [1, 2]),
-        ([1, 2, 3], [1, 2]),
-    ])
+    @pytest.mark.parametrize(
+        "a_shape,b_shape",
+        [
+            ([1, 2], [1, 2, 3]),
+            ([1], [1, 2]),
+            ([1, 2, 3], [1, 2]),
+        ],
+    )
     def test_different_shapes_raise_error(self, a_shape, b_shape):
         a = np.array(a_shape, dtype=np.float32)
         b = np.array(b_shape, dtype=np.float32)
         with pytest.raises(ValueError, match="same shape"):
             cosine_similarity(a, b)
 
-    @pytest.mark.parametrize("shape", [
-        (2, 2),
-        (3, 3, 3),
-        (1, 5),
-    ])
+    @pytest.mark.parametrize(
+        "shape",
+        [
+            (2, 2),
+            (3, 3, 3),
+            (1, 5),
+        ],
+    )
     def test_non_1d_vectors_raise_error(self, shape):
         a = np.ones(shape, dtype=np.float32)
         b = np.ones(shape, dtype=np.float32)

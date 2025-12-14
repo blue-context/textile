@@ -125,9 +125,7 @@ class MessageMetadata:
         """Deserialize from dict."""
         metadata = cls()
         metadata._global = data.get("global", {}).copy()
-        metadata._namespaces = {
-            k: v.copy() for k, v in data.get("namespaces", {}).items()
-        }
+        metadata._namespaces = {k: v.copy() for k, v in data.get("namespaces", {}).items()}
         return metadata
 
     def _get_raw(self, key: str) -> Any:

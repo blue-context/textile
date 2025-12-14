@@ -40,7 +40,9 @@ class OnPattern:
         assert isinstance(self.pattern, re.Pattern)
 
         if not (isinstance(self.replacement, str) or callable(self.replacement)):
-            raise TypeError(f"replacement must be str or Callable, got {type(self.replacement).__name__}")
+            raise TypeError(
+                f"replacement must be str or Callable, got {type(self.replacement).__name__}"
+            )
 
     def get_replacement(self, match: re.Match) -> str:
         """Get replacement string for match."""

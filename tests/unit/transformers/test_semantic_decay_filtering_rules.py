@@ -49,10 +49,13 @@ class TestSemanticDecayFilteringRules:
         state = TurnState(user_message="Query", turn_index=1)
         assert not transformer.should_apply(single, state)
 
-        multiple = ContextWindow([
-            Message(role="user", content="One"),
-            Message(role="user", content="Two"),
-        ], max_tokens=4096)
+        multiple = ContextWindow(
+            [
+                Message(role="user", content="One"),
+                Message(role="user", content="Two"),
+            ],
+            max_tokens=4096,
+        )
         assert transformer.should_apply(multiple, state)
 
     def test_handles_empty_context(self):

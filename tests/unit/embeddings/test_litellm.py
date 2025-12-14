@@ -1,8 +1,8 @@
 """Tests for LiteLLM embedding implementation."""
 
-import pytest
+
 import numpy as np
-from unittest.mock import Mock
+import pytest
 
 from textile.embeddings.litellm import Embedding
 

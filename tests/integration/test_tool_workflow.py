@@ -1,8 +1,9 @@
 """Integration tests for tool selection workflows."""
-from unittest.mock import Mock, patch
-import pytest
+from unittest.mock import patch
+
 from textile import completion
 from textile.transformers import SemanticToolSelectionTransformer
+
 
 def test_tool_selection_workflow_basic(conversation_messages, mock_litellm_response):
     """Test completion with tools passed through."""

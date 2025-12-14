@@ -1,8 +1,8 @@
 """Async/sync compatibility helpers."""
 
 import asyncio
-from typing import TypeVar
 from collections.abc import Coroutine
+from typing import TypeVar
 
 T = TypeVar('T')
 

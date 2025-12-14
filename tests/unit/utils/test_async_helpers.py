@@ -1,7 +1,8 @@
 """Tests for async/sync compatibility helpers."""
 
-import pytest
 import asyncio
+
+import pytest
 
 from textile.utils.async_helpers import run_sync
 

@@ -2,12 +2,12 @@
 
 import numpy as np
 import pytest
+from conftest import create_message
 
 from textile.core.context_window import ContextWindow
 from textile.core.message import Message
 from textile.core.turn_state import TurnState
 from textile.transformers.semantic_prune import SemanticPruningTransformer
-from conftest import create_message
 
 
 class TestSemanticPruningTransformer:

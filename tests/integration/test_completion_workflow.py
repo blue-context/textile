@@ -1,8 +1,11 @@
 """Integration tests for basic completion workflows."""
 from unittest.mock import patch
+
 import pytest
+
 from textile import completion
 from textile.transformers import DecayTransformer
+
 
 def test_basic_completion_no_transformers(conversation_messages, mock_litellm_response):
     """Test messages → LLM without transformers."""

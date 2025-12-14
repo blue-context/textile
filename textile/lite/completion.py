@@ -12,7 +12,6 @@ from textile.core.message import Message
 from textile.core.response_handler import StreamingResponseHandler
 from textile.core.turn_state import TurnState
 
-
 logger = logging.getLogger(__name__)
 
 

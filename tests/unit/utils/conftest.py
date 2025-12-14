@@ -1,8 +1,9 @@
 """Shared fixtures for utils module tests."""
 
-import pytest
-import numpy as np
 import asyncio
+
+import numpy as np
+import pytest
 
 
 @pytest.fixture

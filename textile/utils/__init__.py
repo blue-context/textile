@@ -4,8 +4,8 @@
 - async_helpers: Safe async/sync interop utilities
 """
 
-from textile.utils.similarity import cosine_similarity
 from textile.utils.async_helpers import run_sync
+from textile.utils.similarity import cosine_similarity
 
 __all__ = [
     "cosine_similarity",

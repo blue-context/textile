@@ -7,21 +7,21 @@ adding Textile's conversation context optimization features.
 from textile.lite.completion import acompletion, completion
 from textile.lite.embeddings import aembedding, embedding
 from textile.lite.exports import (
+    # Multimodal
+    aimage_generation,
+    atranscription,
     # Batch operations
     batch_completion,
     batch_completion_models,
     batch_completion_models_all_responses,
-    # Multimodal
-    aimage_generation,
-    atranscription,
-    image_generation,
-    moderation,
-    transcription,
     # Utilities
     get_model_info,
+    image_generation,
+    moderation,
     supports_function_calling,
     supports_response_schema,
     supports_vision,
+    transcription,
 )
 from textile.lite.tokens import (
     count_tokens,

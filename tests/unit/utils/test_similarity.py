@@ -1,7 +1,7 @@
 """Tests for cosine similarity utility."""
 
-import pytest
 import numpy as np
+import pytest
 
 from textile.utils.similarity import cosine_similarity
 

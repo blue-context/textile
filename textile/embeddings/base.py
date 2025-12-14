@@ -2,8 +2,8 @@
 
 from abc import ABC, abstractmethod
 
-import numpy.typing as npt
 import numpy as np
+import numpy.typing as npt
 
 
 class EmbeddingModel(ABC):

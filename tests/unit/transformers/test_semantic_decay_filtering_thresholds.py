@@ -1,11 +1,11 @@
 """Tests for SemanticDecayTransformer threshold-based filtering."""
 
 import numpy as np
+from conftest import create_message
 
 from textile.core.context_window import ContextWindow
 from textile.core.turn_state import TurnState
 from textile.transformers.semantic_decay import SemanticDecayTransformer
-from conftest import create_message
 
 
 class TestSemanticDecayFilteringThresholds:

@@ -1,8 +1,6 @@
 """Tests for TransformationPipeline."""
 
-import pytest
 
-from textile.core.context_window import ContextWindow
 from textile.core.message import Message
 from textile.core.turn_state import TurnState
 from textile.transformers.base import ContextTransformer

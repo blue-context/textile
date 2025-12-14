@@ -38,7 +38,7 @@ class TestTurnStateCreation:
 
     def test_immutability(self) -> None:
         state = TurnState(user_message="test")
-        with pytest.raises(Exception):  # FrozenInstanceError or AttributeError
+        with pytest.raises((AttributeError, TypeError)):  # Frozen dataclass raises one of these
             state.user_message = "changed"  # type: ignore[misc]
 
 

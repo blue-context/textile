@@ -1,10 +1,10 @@
 """Tests for SemanticDecayTransformer relevance calculation."""
 
+from conftest import create_message
+
 from textile.core.context_window import ContextWindow
-from textile.core.message import Message
 from textile.core.turn_state import TurnState
 from textile.transformers.semantic_decay import SemanticDecayMetadata, SemanticDecayTransformer
-from conftest import create_message
 
 
 class TestSemanticDecayRelevance:

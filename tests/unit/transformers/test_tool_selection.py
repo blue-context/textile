@@ -1,11 +1,10 @@
 """Tests for SemanticToolSelectionTransformer."""
 
-import numpy as np
-import pytest
 from unittest.mock import Mock, patch
 
-from textile.core.context_window import ContextWindow
-from textile.core.message import Message
+import numpy as np
+import pytest
+
 from textile.core.turn_state import TurnState
 from textile.transformers.tool_selection import SemanticToolSelectionTransformer
 

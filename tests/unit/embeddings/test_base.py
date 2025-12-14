@@ -1,7 +1,7 @@
 """Tests for EmbeddingModel protocol."""
 
-import pytest
 import numpy as np
+import pytest
 
 from textile.embeddings.base import EmbeddingModel
 

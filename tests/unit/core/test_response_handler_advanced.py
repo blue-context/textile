@@ -29,7 +29,7 @@ class TestErrorHandling:
             raise ValueError("transform crash")
         pattern = OnPattern("X", crash_func)
         handler = StreamingResponseHandler([pattern])
-        result = handler.transform_chunk("XXX buffering text")
+        handler.transform_chunk("XXX buffering text")
         handler.flush()
         assert handler.get_stats()['errors'] > 0
 
@@ -88,7 +88,7 @@ class TestApplyPatternsEdgeCases:
             raise RuntimeError("pattern error")
         patterns = [OnPattern("A", error_func), OnPattern("B", "2")]
         handler = StreamingResponseHandler(patterns)
-        result = handler._apply_patterns("A and B")
+        handler._apply_patterns("A and B")
         assert handler.get_stats()['errors'] > 0
 
     def test_partial_match_at_boundary(self) -> None:

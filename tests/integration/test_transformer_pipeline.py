@@ -1,8 +1,9 @@
 """Integration tests for multi-transformer pipelines."""
 from unittest.mock import Mock, patch
-import pytest
+
 from textile import completion
-from textile.transformers import DecayTransformer, TransformationPipeline
+from textile.transformers import DecayTransformer
+
 
 def test_pipeline_with_multiple_transformers(conversation_messages, mock_litellm_response):
     """Test messages → pipeline (2 transformers) → LLM."""

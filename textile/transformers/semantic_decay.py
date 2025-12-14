@@ -3,6 +3,7 @@
 import math
 from dataclasses import dataclass
 from enum import Enum
+
 from textile.core.context_window import ContextWindow
 from textile.core.message import Message
 from textile.core.metadata import DataclassMetadata

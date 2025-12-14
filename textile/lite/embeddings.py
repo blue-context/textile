@@ -1,6 +1,5 @@
 """Transparent wrapper around LiteLLM embedding with modern Python 3.11+ patterns."""
 
-import asyncio
 from typing import Any
 
 import litellm

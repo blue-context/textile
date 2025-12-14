@@ -1,0 +1,92 @@
+{
+  "repo_notes": [
+    {
+      "content": "Textile is a transparent message transformation middleware for LLM applications. It wraps LiteLLM with zero API changes while providing powerful transformation pipelines. The project is organized into clear layers: /lite (public API), /core (internal implementation), /transformers (optimization), /embeddings (semantic operations), and /utils (helpers).",
+      "author": "Blue Context Inc."
+    },
+    {
+      "content": "The /lite directory contains the public-facing API that maintains drop-in compatibility with LiteLLM. This is the primary entry point for users and should be prioritized in documentation.",
+      "author": "Architecture"
+    },
+    {
+      "content": "The /transformers directory contains the core value proposition - built-in transformers like DecayTransformer, SemanticPruningTransformer, SemanticDecayTransformer, and SemanticToolSelectionTransformer. These should be well-documented with examples.",
+      "author": "Features"
+    },
+    {
+      "content": "All code uses async-first architecture. Transformers are stateless and immutable. The design philosophy emphasizes zero API changes from LiteLLM while adding transparent optimization.",
+      "author": "Design Philosophy"
+    }
+  ],
+  "pages": [
+    {
+      "title": "Getting Started",
+      "purpose": "Overview of Textile, installation instructions, and quick start examples. Cover the basic usage pattern and demonstrate zero API change compatibility with LiteLLM.",
+      "parent": null
+    },
+    {
+      "title": "Public API (textile.lite)",
+      "purpose": "Document the public-facing API in textile/lite/: completion(), acompletion(), embedding(), and all utility functions. Explain how these maintain drop-in compatibility with litellm while adding transformation capabilities.",
+      "parent": null
+    },
+    {
+      "title": "Built-in Transformers",
+      "purpose": "Comprehensive documentation of all built-in transformers in textile/transformers/: DecayTransformer, SemanticPruningTransformer, SemanticDecayTransformer, SemanticToolSelectionTransformer, and TransformationPipeline. Include usage examples, parameters, and when to use each.",
+      "parent": null
+    },
+    {
+      "title": "DecayTransformer",
+      "purpose": "Detailed documentation of DecayTransformer: exponential decay for older messages, parameters (half_life_turns, threshold, min_recent_messages), and use cases for long conversations.",
+      "parent": "Built-in Transformers"
+    },
+    {
+      "title": "SemanticPruningTransformer",
+      "purpose": "Document SemanticPruningTransformer: removes messages below similarity threshold, requires embedding model, and use cases for topic-focused conversations.",
+      "parent": "Built-in Transformers"
+    },
+    {
+      "title": "SemanticDecayTransformer",
+      "purpose": "Document SemanticDecayTransformer: combines temporal and semantic decay, parameters (similarity_weight), and use cases for balanced context optimization.",
+      "parent": "Built-in Transformers"
+    },
+    {
+      "title": "SemanticToolSelectionTransformer",
+      "purpose": "Document SemanticToolSelectionTransformer: filters large tool catalogs to most relevant tools, parameters (top_k, similarity_threshold), and use cases for function calling with many tools.",
+      "parent": "Built-in Transformers"
+    },
+    {
+      "title": "Creating Custom Transformers",
+      "purpose": "Guide for creating custom transformers. Explain the ContextTransformer base class, transform() method signature, ContextWindow and TurnState objects, and best practices for immutable transformations.",
+      "parent": "Built-in Transformers"
+    },
+    {
+      "title": "Core Architecture",
+      "purpose": "Document the internal architecture in textile/core/: ContextWindow, Message, TurnState, StreamingResponseHandler, and response patterns. Explain the immutable, async-first design philosophy.",
+      "parent": null
+    },
+    {
+      "title": "Embedding Models",
+      "purpose": "Document the embedding system in textile/embeddings/: EmbeddingModel protocol, LiteLLM-based implementation, and how embeddings power semantic transformers.",
+      "parent": null
+    },
+    {
+      "title": "Configuration",
+      "purpose": "Document the textile.configure() API, global configuration vs per-call transformers, embedding model setup, and environment variable configuration.",
+      "parent": null
+    },
+    {
+      "title": "Streaming Support",
+      "purpose": "Document streaming capabilities: how transformers work with streaming, StreamingResponseHandler, and response pattern transformations.",
+      "parent": null
+    },
+    {
+      "title": "Async/Await Support",
+      "purpose": "Document async-first architecture: acompletion(), aembedding(), and how the same transformers work in both sync and async contexts.",
+      "parent": null
+    },
+    {
+      "title": "Testing",
+      "purpose": "Overview of the test structure in tests/: unit tests, integration tests, and how to run the test suite. Include coverage requirements and test patterns.",
+      "parent": null
+    }
+  ]
+}

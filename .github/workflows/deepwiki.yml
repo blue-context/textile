@@ -17,4 +17,4 @@ jobs:
     - name: Update DeepWiki
       uses: erayack/deepwiki-action@v1
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+        repository: blue-context/textile

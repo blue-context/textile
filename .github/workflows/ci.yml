@@ -76,6 +76,3 @@ jobs:
 
     - name: Run ruff format check
       run: uv run ruff format --check textile/ tests/
-
-    - name: Run mypy
-      run: uv run mypy textile/

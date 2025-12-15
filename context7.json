@@ -1,0 +1,29 @@
+{
+  "$schema": "https://context7.com/schema/context7.json",
+  "projectTitle": "Textile",
+  "description": "Transparent message transformation middleware for LLM applications. Drop-in replacement for litellm.completion() with zero API changes while providing powerful transformation pipelines for context optimization.",
+  "folders": [
+    "textile/",
+    "README.md",
+    "RELEASING.md"
+  ],
+  "excludeFolders": [
+    "tests/",
+    "workbench/",
+    ".github/",
+    "dist/",
+    "__pycache__/"
+  ],
+  "rules": [
+    "Install with: pip install textile-llm (package name is textile-llm, import name is textile)",
+    "Import as: import textile (not import textile-llm)",
+    "Configure transformers globally with textile.configure() or pass per-call via transformers= parameter",
+    "All transformers are stateless and immutable - they return new objects without mutating inputs",
+    "Textile maintains 100% API compatibility with litellm - any litellm.completion() call works with textile.completion()",
+    "For semantic transformers (SemanticPruningTransformer, SemanticDecayTransformer, SemanticToolSelectionTransformer), configure an embedding model first using textile.configure(embedding_model=Embedding('model-name'))",
+    "Use DecayTransformer for temporal decay based on message age, SemanticPruningTransformer for relevance filtering, SemanticDecayTransformer for combined temporal+semantic decay",
+    "Streaming is fully supported - transformers work transparently with stream=True",
+    "Both sync (textile.completion) and async (textile.acompletion) are supported with the same transformers",
+    "Custom transformers must extend ContextTransformer and implement transform(context, state) returning tuple[ContextWindow, TurnState]"
+  ]
+}

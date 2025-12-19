@@ -1,7 +1,7 @@
 [project]
 name = "textile-llm"
-version = "0.3.0"
-description = "Transparent message transformation middleware for LLM applications"
+version = "0.4.0"
+description = "Transformation infrastructure for LLM applications"
 readme = "README.md"
 requires-python = ">=3.11"
 license = {text = "Apache-2.0"}

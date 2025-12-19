@@ -1,10 +1,12 @@
 {
   "$schema": "https://context7.com/schema/context7.json",
   "projectTitle": "Textile",
-  "description": "Transparent message transformation middleware for LLM applications. Drop-in replacement for litellm.completion() with zero API changes while providing powerful transformation pipelines for context optimization.",
+  "description": "Transformation infrastructure for LLM applications. Drop-in replacement for litellm.completion() with zero API changes. Provides pipelines, protocols, and utilities for building custom message transformers.",
   "folders": [
     "textile/",
+    "examples/",
     "README.md",
+    "MIGRATION.md",
     "RELEASING.md"
   ],
   "excludeFolders": [
@@ -17,13 +19,22 @@
   "rules": [
     "Install with: pip install textile-llm (package name is textile-llm, import name is textile)",
     "Import as: import textile (not import textile-llm)",
-    "Configure transformers globally with textile.configure() or pass per-call via transformers= parameter",
-    "All transformers are stateless and immutable - they return new objects without mutating inputs",
+    "Textile is INFRASTRUCTURE - transformers are user code copied from examples/",
+    "Built-in transformers (DecayTransformer, etc.) are DEPRECATED in v0.4.0 and removed in v0.5.0",
+    "Copy transformers from examples/reference_transformers/ to your project",
+    "examples/ contains reference implementations - teaching examples, not production code",
+    "Custom transformers must extend ContextTransformer and implement transform(context, state) returning tuple[ContextWindow, TurnState]",
+    "Transformers are stateless and immutable - they return new objects without mutating inputs",
     "Textile maintains 100% API compatibility with litellm - any litellm.completion() call works with textile.completion()",
-    "For semantic transformers (SemanticPruningTransformer, SemanticDecayTransformer, SemanticToolSelectionTransformer), configure an embedding model first using textile.configure(embedding_model=Embedding('model-name'))",
-    "Use DecayTransformer for temporal decay based on message age, SemanticPruningTransformer for relevance filtering, SemanticDecayTransformer for combined temporal+semantic decay",
+    "Configure transformers globally with textile.configure() or pass per-call via transformers= parameter",
     "Streaming is fully supported - transformers work transparently with stream=True",
-    "Both sync (textile.completion) and async (textile.acompletion) are supported with the same transformers",
-    "Custom transformers must extend ContextTransformer and implement transform(context, state) returning tuple[ContextWindow, TurnState]"
+    "Both sync (textile.completion) and async (textile.acompletion) are supported",
+    "For semantic transformers, configure an embedding model: textile.configure(embedding_model=Embedding('model-name'))",
+    "Use textile.utils.testing for transformer testing utilities (TransformerTestCase, create_context, assert_messages_removed)",
+    "Use textile.hooks for observability (MetricsHook) - track transformer performance",
+    "Thread safety: textile.configure() is NOT thread-safe - configure once at startup",
+    "Transformers should handle errors gracefully - keep messages on error (fail-safe)",
+    "Always preserve system messages - never remove instructions",
+    "Ensure at least one non-system message remains after transformation"
   ]
 }

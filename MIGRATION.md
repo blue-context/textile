@@ -1,6 +1,6 @@
 # Migration Guide: v0.3.x/v0.4.0 → v0.5.0
 
-**Current Version: v0.5.0** (Released: January 2025)
+**Current Version: v0.5.0** (Released: December 2024)
 
 This guide helps you migrate from v0.3.x or v0.4.0 to v0.5.0.
 
@@ -31,6 +31,20 @@ The built-in transformers have been removed from the core package and are now av
 
 ## How to Migrate
 
+### ⚠️ Important: v0.5.0 Behavior
+
+In v0.5.0 (current release), importing built-in transformers will **fail immediately**:
+
+```python
+# This raises ImportError in v0.5.0:
+from textile.transformers import DecayTransformer
+# ImportError: cannot import name 'DecayTransformer'
+```
+
+**Version Behavior Summary**:
+- **v0.4.0**: Showed deprecation warnings but code still worked
+- **v0.5.0 (current)**: Built-in transformers completely removed, imports fail
+
 ### Step 1: Identify Your Transformers (v0.3.x → v0.4.0)
 
 **Before (v0.3.x)**:
@@ -45,13 +59,18 @@ textile.configure(
 )
 ```
 
-**After upgrading to v0.4.0**: This code still worked but showed deprecation warnings:
+**In v0.4.0**: This code still worked but showed deprecation warnings:
 ```
 DeprecationWarning: DecayTransformer is deprecated and will be removed in v0.5.0.
 Copy from examples/reference_transformers/ to your project instead.
 ```
 
-**In v0.5.0 (current)**: These imports no longer work and will raise `ImportError`.
+**In v0.5.0 (current)**: These imports no longer work and will raise `ImportError`:
+```python
+# This raises ImportError in v0.5.0:
+from textile.transformers import DecayTransformer
+# ImportError: cannot import name 'DecayTransformer' from 'textile.transformers'
+```
 
 ### Step 2: Copy Reference Transformers to Your Project
 
@@ -292,24 +311,28 @@ hook.register_callback(log_metrics)
 
 ### Problem: Import errors in v0.5.0
 
-**Error**:
+**Error (v0.5.0)**:
 ```python
 ImportError: cannot import name 'DecayTransformer' from 'textile.transformers'
 ```
 
-**Solution**: As of v0.5.0, transformers have been removed from the package. Copy transformers from `examples/`:
+**Cause**: As of v0.5.0, built-in transformers have been completely removed from the package.
+
+**Solution**: Copy transformers from `examples/` to your project:
 ```bash
 cp examples/reference_transformers/temporal/decay.py my_app/transformers/
 ```
 
 ### Problem: Deprecation warnings in v0.4.0
 
-**Warning**:
+**Warning (v0.4.0 only)**:
 ```
-DeprecationWarning: DecayTransformer is deprecated...
+DeprecationWarning: DecayTransformer is deprecated and will be removed in v0.5.0.
 ```
 
-**Solution**: This is expected in v0.4.0. Follow migration steps above to silence warnings.
+**Cause**: In v0.4.0, transformers still existed but showed warnings.
+
+**Solution**: Follow migration steps above to copy transformers to your project and update imports.
 
 ### Problem: Tests breaking after migration
 

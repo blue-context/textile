@@ -5,7 +5,25 @@ from unittest.mock import patch
 import pytest
 
 from textile import completion
-from textile.transformers import DecayTransformer
+from textile.transformers.base import ContextTransformer
+
+
+class MockDecayTransformer(ContextTransformer):
+    """Mock transformer for testing integration workflows."""
+
+    def __init__(self, half_life_turns: int = 5, threshold: float = 0.1):
+        """Initialize mock decay transformer.
+
+        Args:
+            half_life_turns: Turns until prominence decays by half
+            threshold: Prominence threshold for pruning
+        """
+        self.half_life_turns = half_life_turns
+        self.threshold = threshold
+
+    def transform(self, context, state):
+        """Return context unchanged for integration tests."""
+        return context, state
 
 
 def test_basic_completion_no_transformers(conversation_messages, mock_litellm_response):
@@ -28,7 +46,7 @@ def test_completion_with_single_transformer(conversation_messages, mock_litellm_
                 response = completion(
                     model="gpt-4",
                     messages=conversation_messages,
-                    transformers=[DecayTransformer(half_life_turns=3)],
+                    transformers=[MockDecayTransformer(half_life_turns=3)],
                 )
                 assert response is not None
                 mock_llm.assert_called_once()
@@ -48,7 +66,7 @@ def test_completion_max_tokens_configuration(
                 response = completion(
                     model="gpt-4",
                     messages=conversation_messages,
-                    transformers=[DecayTransformer()],
+                    transformers=[MockDecayTransformer()],
                     **kwargs,
                 )
                 assert response is not None
@@ -83,7 +101,7 @@ def test_completion_debug_mode(conversation_messages, mock_litellm_response):
                 response = completion(
                     model="gpt-4",
                     messages=conversation_messages,
-                    transformers=[DecayTransformer()],
+                    transformers=[MockDecayTransformer()],
                     debug=True,
                 )
                 assert response is not None

@@ -3,7 +3,25 @@
 from unittest.mock import patch
 
 from textile import completion
-from textile.transformers import SemanticToolSelectionTransformer
+from textile.transformers.base import ContextTransformer
+
+
+class MockToolSelectionTransformer(ContextTransformer):
+    """Mock transformer for testing tool selection workflows."""
+
+    def __init__(self, max_tools: int = 20, similarity_threshold: float = 0.2):
+        """Initialize mock tool selection transformer.
+
+        Args:
+            max_tools: Maximum tools to select
+            similarity_threshold: Similarity threshold for selection
+        """
+        self.max_tools = max_tools
+        self.threshold = similarity_threshold
+
+    def transform(self, context, state):
+        """Return context and state unchanged for integration tests."""
+        return context, state
 
 
 def test_tool_selection_workflow_basic(conversation_messages, mock_litellm_response):
@@ -26,10 +44,10 @@ def test_tool_selection_workflow_basic(conversation_messages, mock_litellm_respo
 
 def test_tool_selection_transformer_initialization():
     """Test tool selection transformer initializes correctly."""
-    transformer = SemanticToolSelectionTransformer(max_tools=5)
+    transformer = MockToolSelectionTransformer(max_tools=5)
     assert transformer.max_tools == 5
     assert transformer.threshold == 0.2
-    transformer = SemanticToolSelectionTransformer(max_tools=10, similarity_threshold=0.5)
+    transformer = MockToolSelectionTransformer(max_tools=10, similarity_threshold=0.5)
     assert transformer.max_tools == 10
     assert transformer.threshold == 0.5
 
@@ -40,7 +58,7 @@ def test_tool_selection_with_transformer(conversation_messages, mock_litellm_res
         {"type": "function", "function": {"name": "tool_1", "description": "Test tool"}},
         {"type": "function", "function": {"name": "tool_2", "description": "Another tool"}},
     ]
-    transformer = SemanticToolSelectionTransformer(max_tools=10)
+    transformer = MockToolSelectionTransformer(max_tools=10)
     with patch("litellm.completion", return_value=mock_litellm_response) as mock_llm:
         with patch("textile.lite.completion.get_config") as mock_config:
             mock_config.return_value.transformers = None

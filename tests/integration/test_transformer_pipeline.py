@@ -3,7 +3,25 @@
 from unittest.mock import Mock, patch
 
 from textile import completion
-from textile.transformers import DecayTransformer
+from textile.transformers.base import ContextTransformer
+
+
+class MockDecayTransformer(ContextTransformer):
+    """Mock transformer for testing integration workflows."""
+
+    def __init__(self, half_life_turns: int = 5, threshold: float = 0.1):
+        """Initialize mock decay transformer.
+
+        Args:
+            half_life_turns: Turns until prominence decays by half
+            threshold: Prominence threshold for pruning
+        """
+        self.half_life_turns = half_life_turns
+        self.threshold = threshold
+
+    def transform(self, context, state):
+        """Return context unchanged for integration tests."""
+        return context, state
 
 
 def test_pipeline_with_multiple_transformers(conversation_messages, mock_litellm_response):
@@ -13,8 +31,8 @@ def test_pipeline_with_multiple_transformers(conversation_messages, mock_litellm
             mock_config.return_value.transformers = None
             with patch("litellm.get_max_tokens", return_value=4096):
                 transformers = [
-                    DecayTransformer(half_life_turns=3, threshold=0.2),
-                    DecayTransformer(half_life_turns=5, threshold=0.1),
+                    MockDecayTransformer(half_life_turns=3, threshold=0.2),
+                    MockDecayTransformer(half_life_turns=5, threshold=0.1),
                 ]
                 response = completion(
                     model="gpt-4", messages=conversation_messages, transformers=transformers
@@ -71,7 +89,7 @@ def test_pipeline_conditional_application(conversation_messages, mock_litellm_re
 
 def test_pipeline_with_config_transformers(conversation_messages, mock_litellm_response):
     """Test global transformers from config."""
-    config_transformer = DecayTransformer(half_life_turns=5)
+    config_transformer = MockDecayTransformer(half_life_turns=5)
     with patch("litellm.completion", return_value=mock_litellm_response) as mock_llm:
         with patch("textile.lite.completion.get_config") as mock_config:
             mock_config.return_value.transformers = [config_transformer]

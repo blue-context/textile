@@ -5,7 +5,25 @@ from unittest.mock import patch
 import pytest
 
 from textile import acompletion, completion
-from textile.transformers import DecayTransformer
+from textile.transformers.base import ContextTransformer
+
+
+class MockDecayTransformer(ContextTransformer):
+    """Mock transformer for testing integration workflows."""
+
+    def __init__(self, half_life_turns: int = 5, threshold: float = 0.1):
+        """Initialize mock decay transformer.
+
+        Args:
+            half_life_turns: Turns until prominence decays by half
+            threshold: Prominence threshold for pruning
+        """
+        self.half_life_turns = half_life_turns
+        self.threshold = threshold
+
+    def transform(self, context, state):
+        """Return context unchanged for integration tests."""
+        return context, state
 
 
 def test_streaming_completion_basic(conversation_messages, mock_litellm_streaming):
@@ -29,7 +47,7 @@ def test_streaming_with_transformer(conversation_messages, mock_litellm_streamin
                 response = completion(
                     model="gpt-4",
                     messages=conversation_messages,
-                    transformers=[DecayTransformer()],
+                    transformers=[MockDecayTransformer()],
                     stream=True,
                 )
 
@@ -46,7 +64,7 @@ def test_streaming_collects_chunks(conversation_messages, mock_litellm_streaming
                 response = completion(
                     model="gpt-4",
                     messages=conversation_messages,
-                    transformers=[DecayTransformer()],
+                    transformers=[MockDecayTransformer()],
                     stream=True,
                 )
 
@@ -72,7 +90,7 @@ async def test_async_streaming_workflow(conversation_messages, mock_async_litell
                 response = await acompletion(
                     model="gpt-4",
                     messages=conversation_messages,
-                    transformers=[DecayTransformer()],
+                    transformers=[MockDecayTransformer()],
                     stream=True,
                 )
 

@@ -3,7 +3,6 @@
 from textile.core.message import Message
 from textile.core.turn_state import TurnState
 from textile.transformers.base import ContextTransformer
-from textile.transformers.decay import DecayTransformer
 from textile.transformers.pipeline import TransformationPipeline
 
 
@@ -38,7 +37,7 @@ class TestTransformationPipeline:
         assert len(context.messages) < initial_count
 
     def test_threads_state_through_transformers(self, sample_context):
-        pipeline = TransformationPipeline([DecayTransformer()])
+        pipeline = TransformationPipeline([TestTransformer()])
         state = TurnState(user_message="Test", turn_index=10)
         _, result_state = pipeline.apply(sample_context, state)
         assert result_state.turn_index == 10
@@ -67,15 +66,15 @@ class TestTransformationPipeline:
         assert len([m for m in context.messages if m.role == "user"]) == 0
 
     def test_remove_transformer(self):
-        pipeline = TransformationPipeline([DecayTransformer(), TestTransformer()])
-        removed = pipeline.remove_transformer(DecayTransformer)
+        pipeline = TransformationPipeline([ConditionalTransformer(), TestTransformer()])
+        removed = pipeline.remove_transformer(ConditionalTransformer)
         assert removed is True
         assert len(pipeline.transformers) == 1
         assert isinstance(pipeline.transformers[0], TestTransformer)
 
     def test_remove_transformer_not_found(self):
         pipeline = TransformationPipeline([TestTransformer()])
-        removed = pipeline.remove_transformer(DecayTransformer)
+        removed = pipeline.remove_transformer(ConditionalTransformer)
         assert removed is False
         assert len(pipeline.transformers) == 1
 

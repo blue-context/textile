@@ -8,6 +8,14 @@ Textile provides the pipeline, protocols, and infrastructure for building custom
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
+## ⚠️ v0.5.0 Breaking Change
+
+**Built-in transformers have been removed.**
+
+If upgrading from v0.3.x or v0.4.0, see [MIGRATION.md](MIGRATION.md) for the upgrade guide.
+
+All transformers are now reference implementations in `examples/reference_transformers/` - copy them to your project and customize for your domain.
+
 ## What is Textile?
 
 Textile is a **drop-in replacement** for `litellm.completion()` that lets you transform messages before they reach the LLM - **with zero API changes**.
@@ -315,7 +323,7 @@ Return response (unchanged)
 
 - **[Building Transformers Guide](examples/README.md)** - Comprehensive guide with patterns and best practices
 - **[Reference Transformers](examples/reference_transformers/)** - Heavily-documented examples
-- **[Migration Guide](MIGRATION.md)** - Upgrading from v0.3.x
+- **[Migration Guide](MIGRATION.md)** - Upgrading from v0.3.x or v0.4.0 to v0.5.0
 - **[API Documentation](#)** - Full API reference (coming soon)
 
 ## Examples
@@ -431,6 +439,10 @@ Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for detai
 
 ## FAQ
 
+**Q: Where did DecayTransformer go?**
+
+A: Removed in v0.5.0. Copy from `examples/reference_transformers/temporal/decay.py` to your project. Transformers are now YOUR code to customize for your domain.
+
 **Q: Why not include production-ready transformers in the package?**
 
 A: Transformers are highly domain-specific. What works for a chatbot doesn't work for RAG. What works for Q&A doesn't work for agents. Reference examples teach patterns - you customize for your domain.
@@ -445,7 +457,7 @@ A: No! Start with a reference transformer that's close to your needs and modify 
 
 **Q: What if I just want it to work out of the box?**
 
-A: Textile v0.3.x included transformers. But they weren't tailored to anyone's specific needs. **v0.4.0+ prioritizes giving you control** over providing generic solutions.
+A: Textile v0.3.x included transformers, but they weren't tailored to anyone's specific needs. **v0.5.0 prioritizes giving you control** over providing generic solutions.
 
 **Q: Can I share my transformers?**
 

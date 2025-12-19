@@ -1,10 +1,14 @@
-# Migration Guide: v0.3.x → v0.5.0
+# Migration Guide: v0.3.x/v0.4.0 → v0.5.0
+
+**Current Version: v0.5.0** (Released: January 2025)
+
+This guide helps you migrate from v0.3.x or v0.4.0 to v0.5.0.
 
 ## Overview
 
 Textile v0.5.0 represents an architectural shift from "middleware with transformers" to **"pure transformation infrastructure"**.
 
-The built-in transformers are moving out of the core package and into `examples/` as **reference implementations**.
+The built-in transformers have been removed from the core package and are now available in `examples/` as **reference implementations**.
 
 ## Why This Change?
 
@@ -21,9 +25,9 @@ The built-in transformers are moving out of the core package and into `examples/
 
 | Version | Status | Action |
 |---------|--------|--------|
-| **v0.3.x** | Current | Built-in transformers work normally |
-| **v0.4.0** | Deprecation | Transformers work but show warnings |
-| **v0.5.0** | Breaking | Transformers removed from package |
+| **v0.3.x** | Legacy | Built-in transformers included |
+| **v0.4.0** | Deprecated | Transformers work with warnings |
+| **v0.5.0** | **Current** | Transformers removed (copy from examples/) |
 
 ## How to Migrate
 
@@ -41,11 +45,13 @@ textile.configure(
 )
 ```
 
-**After upgrading to v0.4.0**: This code still works but shows deprecation warnings:
+**After upgrading to v0.4.0**: This code still worked but showed deprecation warnings:
 ```
 DeprecationWarning: DecayTransformer is deprecated and will be removed in v0.5.0.
 Copy from examples/reference_transformers/ to your project instead.
 ```
+
+**In v0.5.0 (current)**: These imports no longer work and will raise `ImportError`.
 
 ### Step 2: Copy Reference Transformers to Your Project
 
@@ -98,8 +104,8 @@ class DecayTransformer(ContextTransformer):
 
 ## Transformer Mappings
 
-| Old Import (v0.3.x) | New Location (v0.5.0) |
-|---------------------|------------------------|
+| Old Import (v0.3.x/v0.4.0) | New Location (v0.5.0) |
+|----------------------------|------------------------|
 | `textile.transformers.DecayTransformer` | `examples/reference_transformers/temporal/decay.py` |
 | `textile.transformers.SemanticPruningTransformer` | `examples/reference_transformers/semantic/pruning.py` |
 | `textile.transformers.SemanticDecayTransformer` | `examples/reference_transformers/semantic/semantic_decay.py` |
@@ -137,7 +143,7 @@ response = textile.completion(
 )
 ```
 
-### After (v0.5.0)
+### After (v0.5.0) - Current
 
 ```python
 # app.py
@@ -162,7 +168,7 @@ response = textile.completion(
 )
 ```
 
-**Project structure**:
+**Project structure (current)**:
 ```
 my_app/
 ├── __init__.py
@@ -284,14 +290,14 @@ hook.register_callback(log_metrics)
 
 ## Troubleshooting
 
-### Problem: Import errors after upgrading
+### Problem: Import errors in v0.5.0
 
 **Error**:
 ```python
 ImportError: cannot import name 'DecayTransformer' from 'textile.transformers'
 ```
 
-**Solution**: You upgraded to v0.5.0 without migrating. Copy transformers from `examples/`:
+**Solution**: As of v0.5.0, transformers have been removed from the package. Copy transformers from `examples/`:
 ```bash
 cp examples/reference_transformers/temporal/decay.py my_app/transformers/
 ```
